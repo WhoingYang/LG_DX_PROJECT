@@ -136,12 +136,6 @@ class _MyAppState extends State<MyApp> {
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 250, 246, 246),
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 1,
-                                ),
-                              ],
                             ),
                             child: Padding(
                               padding:
@@ -190,12 +184,6 @@ class _MyAppState extends State<MyApp> {
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 250, 246, 246),
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 1,
-                                ),
-                              ],
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -285,12 +273,6 @@ class _MyAppState extends State<MyApp> {
                                   color:
                                       const Color.fromARGB(255, 250, 246, 246),
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 1,
-                                    ),
-                                  ],
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),

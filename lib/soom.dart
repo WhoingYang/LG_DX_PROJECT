@@ -8,6 +8,7 @@ import 'winter_smell.dart';
 import 'aroma_smell.dart';
 import 'diffuser_state.dart'; // DiffuserState 클래스 import
 import 'package:provider/provider.dart'; // Provider 패키지 추가
+import 'mysmell.dart';
 
 class SoomPage extends StatefulWidget {
   const SoomPage({Key? key}) : super(key: key);
@@ -110,7 +111,7 @@ class _SoomPageState extends State<SoomPage> {
                   // 상단 30% 영역
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    padding: const EdgeInsets.only(top: 20, bottom: 15),
                     child: Column(
                       children: [
                         // 이미지
@@ -128,7 +129,7 @@ class _SoomPageState extends State<SoomPage> {
                               alignment: Alignment.center,
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 24),
+                                    vertical: 6, horizontal: 24),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF23A46B), // 박스 배경색
                                   borderRadius: BorderRadius.circular(30),
@@ -159,8 +160,8 @@ class _SoomPageState extends State<SoomPage> {
                                         diffuserState.isDiffuserOn
                                             ? "assets/img/home_power_icon.png" // 켜짐 상태
                                             : "assets/img/home_power_off_icon.png", // 꺼짐 상태
-                                        width: 50,
-                                        height: 50,
+                                        width: 45,
+                                        height: 45,
                                       ),
                                     );
                                   },
@@ -190,177 +191,104 @@ class _SoomPageState extends State<SoomPage> {
                     ),
                   ),
 
-                  // 상단 45% 영역
+                  // 상단 50% 영역
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.50,
                     child: Column(
                       children: [
-                        // 위쪽 3 부분
+                        // 박스 1
                         Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              // 위쪽 3 부분을 다시 위아래 2:1로 나누기
-                              Expanded(
-                                flex: 2, // 위 2 부분
-                                child: Row(
+                          flex: 1,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 6.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/img/smell_power_icon.png',
+                                  width: 60,
+                                  height: 60,
+                                ),
+                                // const SizedBox(height: 8),
+                                const Text(
+                                  "발향 세기",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // 박스 1
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 20.0,
-                                            right: 6.0,
-                                            bottom: 6.0), // 간격 설정
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 255, 255, 255),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // 내용 중앙 정렬
-                                          children: [
-                                            Image.asset(
-                                              'assets/img/smell_detail_controll_icon.png', // 아이콘 이미지
-                                              width: 50, // 이미지 너비
-                                              height: 50, // 이미지 높이
-                                            ),
-                                            const SizedBox(
-                                                height: 12), // 이미지와 텍스트 사이 간격
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12.0,
-                                                      vertical: 6.0), // 내부 여백
-                                              decoration: BoxDecoration(
-                                                color: const Color(
-                                                    0xfff5f5f5), // 회색 박스 색상
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20), // 모서리 둥글게
-                                              ),
-                                              child: const Text(
-                                                "   향 미세 조정   ", // 텍스트
-                                                style: TextStyle(
-                                                  fontFamily: 'Pretendard',
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black, // 텍스트 색상
-                                                ),
-                                              ),
-                                            )
-                                          ],
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 72.0),
+                                      child: GestureDetector(
+                                        onTap: _decreaseIntensity,
+                                        child: const Icon(
+                                          Icons.arrow_back_ios,
+                                          size: 20,
+                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
-
-                                    // 박스 2
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 6.0,
-                                            right: 20,
-                                            bottom: 6), // 간격 설정
-                                        decoration: BoxDecoration(
-                                          color: const Color.fromARGB(
-                                              255, 255, 255, 255),
-                                          // border: Border.all(
-                                          //     color: Colors.grey, width: 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              'assets/img/smell_power_icon.png',
-                                              width: 50,
-                                              height: 50,
-                                            ),
-                                            const SizedBox(height: 2),
-                                            const Text(
-                                              "발향 세기",
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween, // 아이콘을 양끝으로 배치
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                      left:
-                                                          22.0), // 왼쪽 벽과 화살표 사이 간격
-                                                  child: GestureDetector(
-                                                    onTap:
-                                                        _decreaseIntensity, // 왼쪽 화살표 클릭 이벤트
-                                                    child: const Icon(
-                                                        Icons.arrow_back_ios,
-                                                        size: 16,
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  intensityLevels[
-                                                      currentIntensityIndex], // 현재 발향 세기
-                                                  style: const TextStyle(
-                                                    color: Color(0xff267488),
-                                                    fontFamily: 'Pretendard',
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .only(
-                                                      right:
-                                                          22.0), // 오른쪽 벽과 화살표 사이 간격
-                                                  child: GestureDetector(
-                                                    onTap:
-                                                        _increaseIntensity, // 오른쪽 화살표 클릭 이벤트
-                                                    child: const Icon(
-                                                        Icons.arrow_forward_ios,
-                                                        size: 16,
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                    Text(
+                                      intensityLevels[currentIntensityIndex],
+                                      style: const TextStyle(
+                                        color: Color(0xff267488),
+                                        fontFamily: 'Pretendard',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 72.0),
+                                      child: GestureDetector(
+                                        onTap: _increaseIntensity,
+                                        child: const Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 20,
+                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              // 박스 3
-                              Expanded(
-                                flex: 1,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ChatSoomPage(),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 20.0),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 255, 255, 255),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // 박스 2
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 6.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ChatSoomPage(), // ChatSoomPage로 이동
+                                        ),
+                                      );
+                                    },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -368,14 +296,19 @@ class _SoomPageState extends State<SoomPage> {
                                         Row(
                                           children: [
                                             const SizedBox(width: 16),
-                                            Image.asset(
-                                              'assets/img/make_smell_icon.png',
-                                              width: 40,
-                                              height: 40,
+                                            Container(
+                                              width: 35, // 이미지 너비 조정
+                                              height: 35, // 이미지 높이 조정
+                                              alignment:
+                                                  Alignment.center, // 중앙 정렬
+                                              child: Image.asset(
+                                                'assets/img/make_smell_icon.png',
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
                                             const SizedBox(width: 8),
                                             const Text(
-                                              "새로운 향 조향하기",
+                                              "  스마트 향 조향",
                                               style: TextStyle(
                                                 fontFamily: 'Pretendard',
                                                 fontSize: 16,
@@ -393,25 +326,79 @@ class _SoomPageState extends State<SoomPage> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 65, right: 20.0),
+                                  child: Divider(
+                                    thickness: 1,
+                                    color: const Color(0xffE5E7EE),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              MySmellPage(), // MySmellPage로 이동
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const SizedBox(width: 16),
+                                            Container(
+                                              width: 35, // 이미지 너비 조정
+                                              height: 35, // 이미지 높이 조정
+                                              alignment:
+                                                  Alignment.center, // 중앙 정렬
+                                              child: Image.asset(
+                                                'assets/img/smell_detail_controll_icon.png',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            const Text(
+                                              "  나만의 향 조향",
+                                              style: TextStyle(
+                                                fontFamily: 'Pretendard',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 16),
+                                          child: Icon(Icons.arrow_forward_ios,
+                                              size: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        // 박스 3과 박스 4 사이 간격 늘리기
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 16),
+                        // 박스 3
                         Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Container(
                             margin: const EdgeInsets.symmetric(
-                                vertical: 0.0, horizontal: 20.0),
+                                horizontal: 20.0, vertical: 6.0),
                             decoration: BoxDecoration(
                               color: const Color.fromARGB(255, 255, 255, 255),
-                              // border: Border.all(color: Colors.grey, width: 1.0),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Column(
                               children: [
-                                // 위쪽 영역
                                 Expanded(
                                   child: Row(
                                     mainAxisAlignment:
@@ -446,12 +433,12 @@ class _SoomPageState extends State<SoomPage> {
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(
-                                      left: 65, right: 20.0), // Divider 길이 조정
+                                      left: 65, right: 20.0),
                                   child: Divider(
-                                      thickness: 1,
-                                      color: const Color(0xffE5E7EE)),
+                                    thickness: 1,
+                                    color: const Color(0xffE5E7EE),
+                                  ),
                                 ),
-                                // 아래쪽 영역
                                 Expanded(
                                   child: Row(
                                     mainAxisAlignment:
@@ -486,10 +473,9 @@ class _SoomPageState extends State<SoomPage> {
                                               isLightOn = value;
                                             });
                                           },
-                                          activeColor:
-                                              Colors.white, // 버튼 색상: 하얀색
-                                          activeTrackColor: const Color(
-                                              0xff3291ab), // 트랙 색상: 청록색
+                                          activeColor: Colors.white,
+                                          activeTrackColor:
+                                              const Color(0xff3291ab),
                                         ),
                                       ),
                                     ],
