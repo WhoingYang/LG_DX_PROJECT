@@ -1,7 +1,7 @@
 // lib/soom.dart
 import 'package:flutter/material.dart';
 import 'useful_features_page.dart';
-import 'chat_thinq.dart'; // ChatThinqPage를 사용하기 위해 import
+import 'chatsoom.dart'; // ChatThinqPage를 사용하기 위해 import
 import 'main.dart';
 import 'christmas_smell.dart';
 import 'winter_smell.dart';
@@ -349,8 +349,7 @@ class _SoomPageState extends State<SoomPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ChatThinqPage(),
+                                        builder: (context) => ChatSoomPage(),
                                       ),
                                     );
                                   },
