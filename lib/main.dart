@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'soom.dart'; // SoomPage를 사용하기 위해 soom.dart 파일을 import
-import 'smart_routine.dart'; // SmartRoutinePage를 사용하기 위해 import
+import 'package:provider/provider.dart'; // Provider 패키지 추가
+import 'soom.dart';
+import 'smart_routine.dart';
+import 'diffuser_state.dart'; // DiffuserState 클래스 import
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => DiffuserState(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -67,27 +74,43 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           child: Padding(
-            padding: EdgeInsets.only(top: kToolbarHeight + 55),
+            padding: EdgeInsets.only(top: kToolbarHeight + 65),
             child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Text("스마트 루틴",
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              )),
-                          const SizedBox(width: 4),
-                          const Icon(Icons.arrow_forward_ios, size: 16),
-                        ],
-                      ),
-                    ],
+                  child: Builder(
+                    builder: (BuildContext builderContext) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            builderContext,
+                            MaterialPageRoute(
+                              builder: (context) => const SmartRoutinePage(),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Text(
+                                  "스마트 루틴",
+                                  style: TextStyle(
+                                    fontFamily: 'Pretendard',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(Icons.arrow_forward_ios, size: 16),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
                 // 클릭 가능한 "루틴 알아보기" 박스
@@ -319,20 +342,23 @@ class _MyAppState extends State<MyApp> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(right: 3.0),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              isDiffuserOn =
-                                                  !isDiffuserOn; // 상태 반전
-                                            });
+                                        child: Consumer<DiffuserState>(
+                                          builder:
+                                              (context, diffuserState, child) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                diffuserState
+                                                    .toggleDiffuser(); // 상태 토글
+                                              },
+                                              child: Image.asset(
+                                                diffuserState.isDiffuserOn
+                                                    ? "assets/img/home_power_icon.png" // 켜짐 상태
+                                                    : "assets/img/home_power_off_icon.png", // 꺼짐 상태
+                                                width: 25,
+                                                height: 25,
+                                              ),
+                                            );
                                           },
-                                          child: Image.asset(
-                                            isDiffuserOn
-                                                ? "assets/img/home_power_icon.png" // 켜짐 상태
-                                                : "assets/img/home_power_off_icon.png", // 꺼짐 상태
-                                            width: 25,
-                                            height: 25,
-                                          ),
                                         ),
                                       ),
                                     ],
