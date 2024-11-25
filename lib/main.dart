@@ -291,12 +291,12 @@ class _MyAppState extends State<MyApp> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
-                                                "assets/img/airconditioner.png",
+                                                "assets/img/smart_scent_icon.png",
                                                 width: 40,
                                                 height: 40,
                                               ),
                                               SizedBox(height: 4),
-                                              Text("숨(미정)",
+                                              Text("스마트 센트",
                                                   style: TextStyle(
                                                       fontFamily: 'Pretendard',
                                                       fontSize: 14,
