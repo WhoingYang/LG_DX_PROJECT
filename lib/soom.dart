@@ -56,7 +56,7 @@ class _SoomPageState extends State<SoomPage> {
     });
   }
 
-  bool isLightOn = false; // 발향 표시등 상태
+  bool isLightOn = true; // 발향 표시등 상태
   bool isDiffuserOn = true; // 초기 상태
 
   @override
@@ -76,7 +76,7 @@ class _SoomPageState extends State<SoomPage> {
             },
           ),
           title: const Text(
-            '숨 (미정)', // 제목 변경
+            '스마트 센트', // 제목 변경
             style: TextStyle(
               fontFamily: 'Pretendard',
               fontSize: 22,
@@ -95,8 +95,8 @@ class _SoomPageState extends State<SoomPage> {
                 },
                 child: Image.asset(
                   'assets/img/option_icon.png', // 옵션 아이콘 이미지 경로
-                  width: 16, // 아이콘 너비
-                  height: 16, // 아이콘 높이
+                  width: 18, // 아이콘 너비
+                  height: 18, // 아이콘 높이
                 ),
               ),
             ),
@@ -111,14 +111,15 @@ class _SoomPageState extends State<SoomPage> {
                   // 상단 30% 영역
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.only(top: 20, bottom: 15),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: Column(
                       children: [
                         // 이미지
                         Image.asset(
-                          "assets/img/airconditioner.png",
-                          width: 100,
-                          height: 100,
+                          "assets/img/smart_scent.png",
+                          width: MediaQuery.of(context).size.width *
+                              0.9, // 화면 너비의 70%
+                          fit: BoxFit.contain, // 이미지 비율 유지하며 크기 조정
                         ),
                         const SizedBox(height: 16),
                         // 발향력 박스와 파워 버튼을 포함한 Stack
@@ -178,22 +179,22 @@ class _SoomPageState extends State<SoomPage> {
                                 color: Color(0xFF23A46B), size: 10),
                             const SizedBox(width: 4),
                             const Text(
-                              "조향된 향 18ml 남음",
+                              "조향된 향을 3시간 더 사용할 수 있어요",
                               style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xff4e5968)),
                             ),
                           ],
                         ),
                       ],
                     ),
                   ),
-
+                  const SizedBox(height: 10),
                   // 상단 50% 영역
                   Container(
-                    height: MediaQuery.of(context).size.height * 0.50,
+                    height: MediaQuery.of(context).size.height * 0.48,
                     child: Column(
                       children: [
                         // 박스 1
@@ -328,11 +329,10 @@ class _SoomPageState extends State<SoomPage> {
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(
-                                      left: 65, right: 20.0),
-                                  child: Divider(
-                                    thickness: 1,
-                                    color: const Color(0xffE5E7EE),
-                                  ),
+                                      left: 65, right: 20.0), // 기존 마진 유지
+                                  height: 1, // Divider와 동일한 두께 설정
+                                  width: double.infinity, // 가로로 꽉 채움
+                                  color: const Color(0xffE5E7EE), // 기존 색상 유지
                                 ),
                                 Expanded(
                                   child: GestureDetector(
@@ -433,11 +433,10 @@ class _SoomPageState extends State<SoomPage> {
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(
-                                      left: 65, right: 20.0),
-                                  child: Divider(
-                                    thickness: 1,
-                                    color: const Color(0xffE5E7EE),
-                                  ),
+                                      left: 65, right: 20.0), // 기존 마진 유지
+                                  height: 1, // Divider와 동일한 두께 설정
+                                  width: double.infinity, // 가로로 꽉 채움
+                                  color: const Color(0xffE5E7EE), // 기존 색상 유지
                                 ),
                                 Expanded(
                                   child: Row(
@@ -586,8 +585,9 @@ class _SoomPageState extends State<SoomPage> {
               child: Column(
                   mainAxisSize: MainAxisSize.min, // Column의 높이를 내용 크기로 제한
                   children: [
-                    Divider(
-                      thickness: 1,
+                    Container(
+                      height: 1, // Divider와 동일한 두께
+                      width: double.infinity,
                       color: Colors.white, // 원하는 색상
                     ),
                     Container(

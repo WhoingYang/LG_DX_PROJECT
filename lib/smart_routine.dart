@@ -51,7 +51,7 @@ class SmartRoutinePage extends StatelessWidget {
               children: [
                 // "나의 루틴" 텍스트
                 Align(
-                  alignment: Alignment(-0.52, 0.0), // 화면의 1/4 위치로 이동
+                  alignment: const Alignment(-0.52, 0.0), // 화면의 1/4 위치로 이동
                   child: const Padding(
                     padding:
                         EdgeInsets.only(right: 20, top: 10), // 텍스트와 디바이더 사이 여백
@@ -128,15 +128,29 @@ class SmartRoutinePage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Image.asset(
-                    "assets/img/card2.png",
-                    fit: BoxFit.contain,
-                    width: MediaQuery.of(context).size.width * 0.45, // 카드 너비 설정
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CardPage1()),
+                    ),
+                    child: Image.asset(
+                      "assets/img/card1.png",
+                      fit: BoxFit.contain,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                    ),
                   ),
-                  Image.asset(
-                    "assets/img/card3.png",
-                    fit: BoxFit.contain,
-                    width: MediaQuery.of(context).size.width * 0.45,
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CardPage2()),
+                    ),
+                    child: Image.asset(
+                      "assets/img/card2.png",
+                      fit: BoxFit.contain,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                    ),
                   ),
                 ],
               ),
@@ -145,10 +159,17 @@ class SmartRoutinePage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 12.0), // 왼쪽 패딩 적용
                 child: Row(
                   children: [
-                    Image.asset(
-                      "assets/img/card1.png",
-                      fit: BoxFit.contain,
-                      width: MediaQuery.of(context).size.width * 0.45,
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CardPage3()),
+                      ),
+                      child: Image.asset(
+                        "assets/img/card3.png",
+                        fit: BoxFit.contain,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                      ),
                     ),
                   ],
                 ),
@@ -156,6 +177,70 @@ class SmartRoutinePage extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+// 각 페이지 클래스 정의
+class CardPage1 extends StatelessWidget {
+  const CardPage1({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Center(
+          child: Image.asset(
+            "assets/img/card1_detail.png",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardPage2 extends StatelessWidget {
+  const CardPage2({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Center(
+          child: Image.asset(
+            "assets/img/card2_detail.png",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardPage3 extends StatelessWidget {
+  const CardPage3({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Center(
+          child: Image.asset(
+            "assets/img/card3_detail.png",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
+        ),
       ),
     );
   }

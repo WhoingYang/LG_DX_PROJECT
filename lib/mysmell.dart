@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'customrectangularthumbshape.dart';
 
 class MySmellPage extends StatefulWidget {
   const MySmellPage({Key? key}) : super(key: key);
@@ -31,20 +30,53 @@ class _MySmellPageState extends State<MySmellPage> {
     Color(0xffa5dcff),
   ]; // 태그 색상
 
-  final List<String> tagLabels = ["메롱", "자몽", "어쩌고", "저쩌고", "저쩌고", "저쩌고"];
+  final List<String> tagLabels = ["메롱", "자몽", "양현", "서예람", "김서연", "이지민"];
   final List<String> sliderLabels = ["향1", "향2", "향3", "향4"]; // 슬라이더 텍스트
 
   // 비율 계산 함수 (전체 100% 유지)
   void _updateRatios(int index, double value) {
     setState(() {
-      double adjustment = (value - ratios[index]); // 변경된 값만큼 조정
-      ratios[index] = value; // 현재 슬라이더 값 변경
+      double adjustment = value - ratios[index]; // 변경된 값만큼 조정
+      ratios[index] = value.clamp(0.0, 100.0); // 현재 슬라이더 값 조정 (0~100 범위 제한)
 
+      // 나머지 슬라이더에 조정값 분배
       for (int i = 0; i < ratios.length; i++) {
-        if (i != index && adjustment != 0) {
-          ratios[i] -= adjustment / (ratios.length - 1);
-          ratios[i] = ratios[i].clamp(0.0, 100.0); // 0~100 범위 제한
+        if (i != index) {
+          ratios[i] =
+              (ratios[i] - adjustment / (ratios.length - 1)).clamp(0.0, 100.0);
         }
+      }
+
+      // 모든 슬라이더 값들의 합 계산
+      double total = ratios.reduce((a, b) => a + b);
+
+      // 합이 100을 초과할 경우 초과값만큼 다른 슬라이더에서 조정
+      if (total > 100) {
+        double excess = total - 100;
+        for (int i = 0; i < ratios.length; i++) {
+          if (i != index && excess > 0) {
+            double deduction = excess.clamp(0.0, ratios[i]); // 차감 가능한 값
+            ratios[i] -= deduction;
+            excess -= deduction;
+          }
+        }
+      }
+
+      // 합이 100 미만일 경우 부족값만큼 다른 슬라이더에 추가
+      if (total < 100) {
+        double deficit = 100 - total;
+        for (int i = 0; i < ratios.length; i++) {
+          if (i != index && deficit > 0) {
+            double addition = deficit.clamp(0.0, 100.0 - ratios[i]); // 추가 가능한 값
+            ratios[i] += addition;
+            deficit -= addition;
+          }
+        }
+      }
+
+      // 값이 정확히 0.0 ~ 100.0 범위를 벗어나지 않도록 보정
+      for (int i = 0; i < ratios.length; i++) {
+        ratios[i] = ratios[i].clamp(0.0, 100.0);
       }
     });
   }
@@ -52,17 +84,33 @@ class _MySmellPageState extends State<MySmellPage> {
   // 태그 클릭 시 슬라이더 색상 및 텍스트 반영
   void _onTagPressed(int tagIndex) {
     setState(() {
+      bool tagAlreadyApplied = false;
+
       for (int i = 0; i < sliderColors.length; i++) {
-        if (!sliderModified[i]) {
-          sliderColors[i] = tagColors[tagIndex]; // 선택한 색상을 슬라이더에 반영
-          sliderLabels[i] = tagLabels[tagIndex]; // 슬라이더 텍스트 변경
-          sliderModified[i] = true; // 해당 슬라이더를 수정 상태로 변경
+        if (sliderModified[i] && sliderLabels[i] == tagLabels[tagIndex]) {
+          // 이미 적용된 태그를 다시 클릭한 경우
+          _resetSlider(i);
+          tagAlreadyApplied = true;
           break;
+        }
+      }
+
+      if (!tagAlreadyApplied) {
+        // 태그를 새로운 슬라이더에 적용
+        for (int i = 0; i < sliderColors.length; i++) {
+          if (!sliderModified[i]) {
+            sliderColors[i] = tagColors[tagIndex]; // 선택한 색상을 슬라이더에 반영
+            sliderLabels[i] = tagLabels[tagIndex]; // 슬라이더 텍스트 변경
+            sliderModified[i] = true; // 해당 슬라이더를 수정 상태로 변경
+            break;
+          }
         }
       }
     });
   }
 
+  String title = "향 이름을 설정해주세요"; // 상단 제목
+  bool isEditing = false; // 편집 모드 여부
   // 슬라이더 초기화
   void _resetSlider(int index) {
     setState(() {
@@ -131,16 +179,65 @@ class _MySmellPageState extends State<MySmellPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            "향 이름을 설정해주세요",
-                            style: TextStyle(
-                              fontFamily: 'Pretendard',
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0xff8b95a1),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isEditing = true; // 편집 모드로 전환
+                              });
+                            },
+                            child: isEditing
+                                ? Container(
+                                    height: 25, // 텍스트 필드 높이 조정
+                                    padding:
+                                        const EdgeInsets.only(left: 12, top: 2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white, // 배경색 설정
+                                    ),
+                                    child: TextField(
+                                      autofocus: true,
+                                      style: const TextStyle(
+                                        fontFamily: 'Pretendard', // 원하는 글꼴
+                                        fontSize: 18, // 글자 크기
+                                        fontWeight: FontWeight.w500, // 글꼴 두께
+                                        color: Color.fromARGB(
+                                            255, 0, 0, 0), // 텍스트 색상
+                                      ),
+                                      onSubmitted: (value) {
+                                        setState(() {
+                                          title = value.isEmpty
+                                              ? "향 이름을 설정해주세요"
+                                              : value; // 입력 값이 없을 경우 기본 텍스트
+                                          isEditing = false; // 편집 모드 종료
+                                        });
+                                      },
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none, // 기본 테두리 제거
+                                        hintText: "향 이름을 입력해주세요",
+                                        hintStyle: TextStyle(
+                                          fontFamily: 'Pretendard',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500, // 글꼴 두께
+
+                                          color: Color(0xff8b95a1), // 힌트 텍스트 색상
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 12), // 왼쪽 패딩 추가
+                                    child: Text(
+                                      title,
+                                      style: const TextStyle(
+                                        fontFamily: 'Pretendard',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff8b95a1),
+                                      ),
+                                    ),
+                                  ),
                           ),
                         ),
                         Expanded(
@@ -158,7 +255,7 @@ class _MySmellPageState extends State<MySmellPage> {
                                         alignment: Alignment.center,
                                         children: [
                                           Container(
-                                            width: 40,
+                                            width: 55,
                                             decoration: BoxDecoration(
                                               color: const Color(0xffeff0f4),
                                               borderRadius:
@@ -166,29 +263,37 @@ class _MySmellPageState extends State<MySmellPage> {
                                             ),
                                           ),
                                           RotatedBox(
-                                            quarterTurns: -1, // 슬라이더를 수직으로 회전
-                                            child: SliderTheme(
-                                              data: SliderTheme.of(context)
-                                                  .copyWith(
-                                                trackHeight: 8.0, // 슬라이더 폭
-                                                activeTrackColor: sliderColors[
-                                                    index], // 활성화된 트랙 색상
-                                                inactiveTrackColor: Colors
-                                                    .grey[300], // 비활성화된 트랙 색상
-                                                thumbColor:
-                                                    Colors.white, // 핸들 색상
-                                                thumbShape:
-                                                    CustomRectangularThumbShape(
-                                                  thumbHeight: 16.0, // 핸들 높이
-                                                  thumbWidth: 8.0, // 핸들 폭
+                                            quarterTurns: -1, // 수직 회전
+                                            child: Container(
+                                              width:
+                                                  300.0, // 슬라이더 길이를 원하는 값으로 설정
+                                              child: SliderTheme(
+                                                data: SliderTheme.of(context)
+                                                    .copyWith(
+                                                  trackHeight: 55.0, // 트랙 높이
+                                                  activeTrackColor:
+                                                      sliderColors[
+                                                          index], // 활성화된 트랙 색상
+                                                  inactiveTrackColor: Color(
+                                                      0xffeff0f4), // 비활성화된 트랙 색상
+                                                  thumbColor:
+                                                      Colors.white, // 핸들 색상
+                                                  thumbShape:
+                                                      CustomRectangularThumbShape(
+                                                    thumbHeight: 55.0, // 핸들 높이
+                                                    thumbWidth: 16.0, // 핸들 폭
+                                                  ),
+                                                  trackShape:
+                                                      CustomSliderTrackShape(), // 커스텀 트랙 사용
                                                 ),
-                                              ),
-                                              child: Slider(
-                                                value: ratios[index],
-                                                min: 0,
-                                                max: 100,
-                                                onChanged: (value) =>
-                                                    _updateRatios(index, value),
+                                                child: Slider(
+                                                  value: ratios[index],
+                                                  min: 0,
+                                                  max: 100,
+                                                  onChanged: (value) =>
+                                                      _updateRatios(
+                                                          index, value),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -251,7 +356,7 @@ class _MySmellPageState extends State<MySmellPage> {
                           padding:
                               EdgeInsets.only(top: 16.0, bottom: 16, left: 20),
                           child: Text(
-                            "자주 사용한 원료",
+                            "자주 사용한 향료",
                             style: TextStyle(
                               fontFamily: 'Pretendard',
                               fontSize: 16,
@@ -361,7 +466,7 @@ class _MySmellPageState extends State<MySmellPage> {
                             ),
                             const SizedBox(width: 20), // 아이콘과 텍스트 간격
                             const Text(
-                              "보유한 원료",
+                              "보유한 향료",
                               style: TextStyle(
                                 fontFamily: 'Pretendard',
                                 fontSize: 16,
@@ -441,5 +546,120 @@ class _MySmellPageState extends State<MySmellPage> {
         ],
       ),
     );
+  }
+}
+
+class CustomSliderTrackShape extends SliderTrackShape {
+  @override
+  Rect getPreferredRect({
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    Offset offset = Offset.zero,
+    bool isEnabled = false,
+    bool isDiscrete = false,
+  }) {
+    final double trackHeight = sliderTheme.trackHeight ?? 2.0;
+    return Rect.fromLTWH(
+      0, // 시작점
+      (parentBox.size.height - trackHeight) / 2.0, // 수직 가운데 정렬
+      parentBox.size.width, // 전체 너비
+      trackHeight, // 트랙 높이
+    );
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset offset, {
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required Animation<double> enableAnimation,
+    required Offset thumbCenter,
+    Offset? secondaryOffset,
+    bool isDiscrete = false,
+    bool isEnabled = false,
+    required TextDirection textDirection,
+  }) {
+    final Rect trackRect = getPreferredRect(
+      parentBox: parentBox,
+      sliderTheme: sliderTheme,
+      offset: offset,
+    );
+
+    final Paint activeTrackPaint = Paint()
+      ..color = sliderTheme.activeTrackColor!;
+    final Paint inactiveTrackPaint = Paint()
+      ..color = sliderTheme.inactiveTrackColor!;
+
+    // 활성화된 트랙
+    context.canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTRB(
+            trackRect.left, trackRect.top, thumbCenter.dx, trackRect.bottom),
+        Radius.circular(10.0), // 모서리 둥글기 설정
+      ),
+      activeTrackPaint,
+    );
+
+    // 비활성화된 트랙
+    context.canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTRB(
+            thumbCenter.dx, trackRect.top, trackRect.right, trackRect.bottom),
+        Radius.circular(10.0), // 모서리 둥글기 설정
+      ),
+      inactiveTrackPaint,
+    );
+  }
+}
+
+class CustomRectangularThumbShape extends SliderComponentShape {
+  final double thumbHeight;
+  final double thumbWidth;
+
+  CustomRectangularThumbShape({
+    this.thumbHeight = 55.0,
+    this.thumbWidth = 16.0,
+  });
+
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return Size(thumbWidth, thumbHeight);
+  }
+
+  @override
+  void paint(
+    PaintingContext context,
+    Offset center, {
+    required Animation<double> activationAnimation,
+    required Animation<double> enableAnimation,
+    required bool isDiscrete,
+    required TextPainter labelPainter,
+    required RenderBox parentBox,
+    required SliderThemeData sliderTheme,
+    required TextDirection textDirection,
+    required double value,
+    required double textScaleFactor,
+    required Size sizeWithOverflow,
+  }) {
+    final Canvas canvas = context.canvas;
+
+    final Paint paint = Paint()
+      ..color = sliderTheme.thumbColor ?? Colors.white
+      ..style = PaintingStyle.fill;
+
+    final Rect thumbRect = Rect.fromCenter(
+      center: center,
+      width: thumbWidth,
+      height: thumbHeight,
+    );
+
+    // 둥근 모서리 설정 (Radius 값 조정 가능)
+    final RRect roundedThumbRect = RRect.fromRectAndRadius(
+      thumbRect,
+      Radius.circular(3.0), // 모서리를 더 둥글게 설정 (6.0으로 변경)
+    );
+
+    canvas.drawRRect(roundedThumbRect, paint);
   }
 }
