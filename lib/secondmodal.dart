@@ -1,7 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'soom.dart';
 
-class SecondModal extends StatelessWidget {
+class SecondModal extends StatefulWidget {
   const SecondModal({Key? key}) : super(key: key);
+
+  @override
+  _SecondModalState createState() => _SecondModalState();
+}
+
+class _SecondModalState extends State<SecondModal> {
+  // Local Notifications 플러그인 인스턴스 생성
+  final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeNotifications(); // 알림 초기화
+  }
+
+  // 알림 초기화 설정
+  Future<void> _initializeNotifications() async {
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher'); // 안드로이드 아이콘 설정
+    const DarwinInitializationSettings iosInitializationSettings =
+        DarwinInitializationSettings(); // iOS 설정
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: androidInitializationSettings,
+      iOS: iosInitializationSettings,
+    );
+
+    await _localNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  // 알림 생성 함수
+  Future<void> _showNotification() async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'channel_id', // 채널 ID
+      '조향 완료 알림', // 채널 이름
+      channelDescription: '스마트 센트 조향 완료 알림', // 채널 설명
+      importance: Importance.high, // 알림 중요도
+      priority: Priority.high, // 알림 우선순위
+    );
+
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    await _localNotificationsPlugin.show(
+      0, // 알림 ID
+      '조향 완료!', // 알림 제목
+      '조향이 성공적으로 완료되었습니다.', // 알림 내용
+      notificationDetails,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +115,13 @@ class SecondModal extends StatelessWidget {
 
                 // 확인 버튼
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 모달 닫기
+                  onPressed: () async {
+                    await _showNotification(); // 알림 표시
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const SoomPage(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: const Size(202, 44),

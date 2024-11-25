@@ -22,7 +22,8 @@ class _ChatGptAppState extends State<ChatGptApp> {
   @override
   void initState() {
     super.initState();
-    Gemini.init(apiKey: "//"); // 실제 API 키 입력
+    Gemini.init(
+        apiKey: "AIzaSyAaeypz83jbE3iImpjmmaxA_OrF0v9rk2c"); // 실제 API 키 입력
 
     // 앱이 시작될 때 첫 번째 질문 자동 전송
     _sendInitialMessage();
@@ -118,7 +119,8 @@ class _ChatGptAppState extends State<ChatGptApp> {
       "탑",
       "노트",
       "추천드립니다",
-      "추천합니다"
+      "추천합니다",
+      "추천해드립니다"
     ];
     final bool isRecommendationMessage =
         keywords.any((keyword) => chat.text.contains(keyword));
@@ -329,7 +331,7 @@ class _ChatGptAppState extends State<ChatGptApp> {
             ),
             SizedBox(width: 10),
             Text(
-              "음답 대기 중...",
+              "응답 대기 중...",
               style: TextStyle(
                   fontFamily: 'Pretandard',
                   fontSize: 16,
