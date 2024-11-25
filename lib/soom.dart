@@ -286,7 +286,7 @@ class _SoomPageState extends State<SoomPage> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ChatSoomPage(), // ChatSoomPage로 이동
+                                              ChatGptApp(), // ChatSoomPage로 이동
                                         ),
                                       );
                                     },
