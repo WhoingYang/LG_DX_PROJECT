@@ -491,6 +491,63 @@ class _MySmellPageState extends State<MySmellPage> {
               ],
             ),
           ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 45.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // 첫 번째 네모
+                  Expanded(
+                    child: Container(
+                      height: 44, // 높이
+                      margin: const EdgeInsets.only(right: 8.0), // 두 네모 사이 간격
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF9FAFD), // 배경색
+                        borderRadius: BorderRadius.circular(30), // 둥근 모서리
+                      ),
+                      child: Center(
+                        child: Text(
+                          "시향하기", // 텍스트
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff405474),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  // 두 번째 네모
+                  Expanded(
+                    child: Container(
+                      height: 44, // 높이
+                      margin: const EdgeInsets.only(left: 8.0), // 두 네모 사이 간격
+                      decoration: BoxDecoration(
+                        color: const Color(0xff405474), // 배경색
+                        borderRadius: BorderRadius.circular(30), // 둥근 모서리
+                      ),
+                      child: Center(
+                        child: Text(
+                          "조향하기", // 텍스트
+                          style: TextStyle(
+                            fontFamily: 'Pretendard',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
