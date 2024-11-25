@@ -95,7 +95,12 @@ class _ChatGptAppState extends State<ChatGptApp> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: _buildTextField(),
+              child: Container(
+                color: Colors.grey[100], // 하얀색 배경 추가
+                padding: const EdgeInsets.only(
+                    top: 0.0, bottom: 30.0), // 위, 아래 간격 설정
+                child: _buildTextField(),
+              ),
             ),
           ],
         ),
@@ -356,32 +361,36 @@ class _ChatGptAppState extends State<ChatGptApp> {
         },
         decoration: InputDecoration(
           hintText: "메시지를 입력하세요",
+          hintStyle: TextStyle(
+            fontFamily: 'Pretendard', // 폰트 지정
+            fontSize: 16, // 폰트 크기
+            fontWeight: FontWeight.w500, // 폰트 두께
+            color: Color(0xFF8b95a1), // 텍스트 색상
+          ),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.only(top: 15, left: 20, right: 20),
+          contentPadding: EdgeInsets.symmetric(
+              vertical: 16, horizontal: 16), // 텍스트의 상하 간격 조정
           alignLabelWithHint: true,
           prefixIcon: Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 40, left: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20), // 좌우 균일 간격
             child: GestureDetector(
               onTap: () {
                 print("Mic icon tapped"); // 마이크 아이콘 클릭 시 동작
               },
               child: Image.asset(
                 'assets/img/mic_icon.png', // 마이크 아이콘 경로
-                width: 25,
-                height: 25,
+                width: 24, // 아이콘 너비
+                height: 24, // 아이콘 높이
               ),
             ),
           ),
           suffixIcon: Padding(
-            padding: const EdgeInsets.only(top: 8, bottom: 40, right: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 16), // 좌우 균일 간격
             child: IconButton(
-              icon: Container(
-                width: 30,
-                height: 30,
-                child: Icon(
-                  Icons.send,
-                  color: _canSendMessage ? Color(0xFF626A7D) : Colors.grey,
-                ),
+              icon: Icon(
+                Icons.send,
+                size: 20, // 아이콘 크기 조정
+                color: _canSendMessage ? Color(0xFF626A7D) : Color(0xFF626A7D),
               ),
               onPressed: _canSendMessage
                   ? () {
@@ -391,7 +400,10 @@ class _ChatGptAppState extends State<ChatGptApp> {
             ),
           ),
         ),
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(
+          fontSize: 16,
+          height: 1.5, // 텍스트와 아이콘이 정렬되도록 줄 간격 설정
+        ),
         maxLines: null,
         keyboardType: TextInputType.text,
       ),
