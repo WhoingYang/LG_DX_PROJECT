@@ -54,8 +54,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isAirconditionerOn = true; // 초기 상태
-  bool isDiffuserOn = true; // 초기 상태
+  bool isAirPurifierOn = false; // 초기 상태
+  bool isDiffuserOn = false; // 초기 상태
+  bool isAirConditionerOn = false; // 초기 상태
 
   @override
   Widget build(BuildContext context) {
@@ -207,98 +208,14 @@ class _MyAppState extends State<MyApp> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 8, horizontal: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      child: Column(
                         children: [
-                          // 첫 번째 박스
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.435,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 250, 246, 246),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 3.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            "assets/img/airconditioner.png",
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                          SizedBox(height: 4),
-                                          Text("공기청정기",
-                                              style: TextStyle(
-                                                fontFamily: 'Pretendard',
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                              )),
-                                          Row(
-                                            children: [
-                                              Icon(Icons.circle,
-                                                  color: Colors.green,
-                                                  size: 12),
-                                              SizedBox(width: 4),
-                                              Text("보통",
-                                                  style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 3.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          isAirconditionerOn =
-                                              !isAirconditionerOn; // 상태 반전
-                                        });
-                                      },
-                                      child: Image.asset(
-                                        isAirconditionerOn
-                                            ? "assets/img/home_power_icon.png" // 켜짐 상태
-                                            : "assets/img/home_power_off_icon.png", // 꺼짐 상태
-                                        width: 25,
-                                        height: 25,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 16),
-
-                          // 두 번째 박스 (클릭 가능하게 설정)
-                          Builder(
-                            // Builder로 context를 제공
-                            builder: (context) => InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SoomPage(),
-                                  ),
-                                );
-                              },
-                              child: Container(
+                          // 첫 번째 Row: 공기청정기와 스마트 센트
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // 첫 번째 박스: 공기청정기
+                              Container(
                                 width:
                                     MediaQuery.of(context).size.width * 0.435,
                                 height: 100,
@@ -316,7 +233,7 @@ class _MyAppState extends State<MyApp> {
                                       Expanded(
                                         child: Padding(
                                           padding:
-                                              const EdgeInsets.only(left: 8.0),
+                                              const EdgeInsets.only(left: 3.0),
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -324,31 +241,48 @@ class _MyAppState extends State<MyApp> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
-                                                "assets/img/smart_scent_icon.png",
+                                                "assets/img/airconditioner.png",
                                                 width: 40,
                                                 height: 40,
                                               ),
                                               SizedBox(height: 4),
-                                              Text("스마트 센트",
+                                              Text("공기청정기",
                                                   style: TextStyle(
-                                                      fontFamily: 'Pretendard',
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  )),
                                               Row(
-                                                children: [
-                                                  Icon(Icons.circle,
-                                                      color: Colors.green,
-                                                      size: 12),
-                                                  SizedBox(width: 4),
-                                                  Text("발향 중",
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'Pretendard',
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w500)),
-                                                ],
+                                                children: isAirPurifierOn
+                                                    ? [
+                                                        Icon(Icons.circle,
+                                                            color: Colors.green,
+                                                            size: 12),
+                                                        const SizedBox(
+                                                            width: 4),
+                                                        const Text(
+                                                          "보통",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Pretendard',
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ]
+                                                    : [
+                                                        const Text(
+                                                          "꺼짐",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Pretendard',
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ],
                                               ),
                                             ],
                                           ),
@@ -357,30 +291,252 @@ class _MyAppState extends State<MyApp> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(right: 3.0),
-                                        child: Consumer<DiffuserState>(
-                                          builder:
-                                              (context, diffuserState, child) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                diffuserState
-                                                    .toggleDiffuser(); // 상태 토글
-                                              },
-                                              child: Image.asset(
-                                                diffuserState.isDiffuserOn
-                                                    ? "assets/img/home_power_icon.png" // 켜짐 상태
-                                                    : "assets/img/home_power_off_icon.png", // 꺼짐 상태
-                                                width: 25,
-                                                height: 25,
-                                              ),
-                                            );
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isAirPurifierOn =
+                                                  !isAirPurifierOn;
+                                            });
                                           },
+                                          child: Image.asset(
+                                            isAirPurifierOn
+                                                ? "assets/img/home_power_icon.png"
+                                                : "assets/img/home_power_off_icon.png",
+                                            width: 25,
+                                            height: 25,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 16),
+
+                              // 두 번째 박스: 스마트 센트
+                              Builder(
+                                builder: (context) => InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SoomPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.435,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 250, 246, 246),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 3.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/img/smart_scent_icon.png",
+                                                        width: 40,
+                                                        height: 40,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  const Text(
+                                                    "스마트 센트",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Pretendard',
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                  Consumer<DiffuserState>(
+                                                    builder: (context,
+                                                        diffuserState, child) {
+                                                      return Row(
+                                                        children: [
+                                                          if (diffuserState
+                                                              .isDiffuserOn) ...[
+                                                            const Icon(
+                                                              Icons.circle,
+                                                              color:
+                                                                  Colors.green,
+                                                              size: 12,
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 4),
+                                                          ],
+                                                          Text(
+                                                            diffuserState
+                                                                    .isDiffuserOn
+                                                                ? "발향 중"
+                                                                : "꺼짐",
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          // 파워 버튼
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 3.0),
+                                            child: Consumer<DiffuserState>(
+                                              builder: (context, diffuserState,
+                                                  child) {
+                                                return GestureDetector(
+                                                  onTap: diffuserState
+                                                      .toggleDiffuser,
+                                                  child: Image.asset(
+                                                    diffuserState.isDiffuserOn
+                                                        ? "assets/img/home_power_icon.png"
+                                                        : "assets/img/home_power_off_icon.png",
+                                                    width: 25,
+                                                    height: 25,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+
+                          // 두 번째 Row: 공기청정기 2
+                          Row(
+                            children: [
+                              // 새로 추가된 공기청정기 2 박스
+                              Container(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.435,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 250, 246, 246),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 3.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                "assets/img/aircon_icon.png",
+                                                width: 40,
+                                                height: 40,
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text("에어컨",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pretendard',
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  )),
+                                              Row(
+                                                children: isAirConditionerOn
+                                                    ? [
+                                                        Icon(Icons.circle,
+                                                            color: Colors.green,
+                                                            size: 12),
+                                                        const SizedBox(
+                                                            width: 4),
+                                                        const Text(
+                                                          "공기순환 중",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Pretendard',
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ]
+                                                    : [
+                                                        const Text(
+                                                          "꺼짐",
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'Pretendard',
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 3.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              isAirConditionerOn =
+                                                  !isAirConditionerOn;
+                                            });
+                                          },
+                                          child: Image.asset(
+                                            isAirConditionerOn
+                                                ? "assets/img/home_power_icon.png"
+                                                : "assets/img/home_power_off_icon.png",
+                                            width: 25,
+                                            height: 25,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

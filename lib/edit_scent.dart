@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class MySmellPage extends StatefulWidget {
+class EditScent extends StatefulWidget {
   final String? title; // 전달받은 제목
   final List<Color>? colors; // 전달받은 색상 리스트
   final List<String>? labels; // 전달받은 레이블 리스트
   final List<double>? percentages; // 전달받은 퍼센트 리스트
 
-  const MySmellPage({
+  const EditScent({
     Key? key,
     this.title,
     this.colors,
@@ -15,10 +15,10 @@ class MySmellPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MySmellPageState createState() => _MySmellPageState();
+  _EditScentPageState createState() => _EditScentPageState();
 }
 
-class _MySmellPageState extends State<MySmellPage> {
+class _EditScentPageState extends State<EditScent> {
   late List<double> ratios;
   late List<Color> sliderColors;
   late List<String> sliderLabels;
@@ -164,7 +164,6 @@ class _MySmellPageState extends State<MySmellPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, // 키보드가 나타나도 레이아웃 변경 방지
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
         leading: IconButton(
@@ -214,53 +213,40 @@ class _MySmellPageState extends State<MySmellPage> {
                               });
                             },
                             child: isEditing
-                                ? Container(
-                                    height: 22,
-                                    child: TextField(
-                                      autofocus: true,
-                                      style: const TextStyle(
+                                ? TextField(
+                                    autofocus: true,
+                                    style: const TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black, // 입력 중 텍스트는 검은색
+                                    ),
+                                    decoration: const InputDecoration(
+                                      hintText: "향 이름을 입력해주세요", // 힌트 텍스트
+                                      hintStyle: TextStyle(
                                         fontFamily: 'Pretendard',
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.black, // 입력 중 텍스트는 검은색
+                                        color: Color(0xff8b95a1), // 힌트 텍스트 색상
                                       ),
-                                      decoration: const InputDecoration(
-                                        hintText: "향 이름을 설정해주세요", // 힌트 텍스트
-                                        hintStyle: TextStyle(
-                                          fontFamily: 'Pretendard',
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff8b95a1), // 힌트 텍스트 색상
-                                        ),
-                                        border: InputBorder.none,
-                                      ),
-                                      textAlign: TextAlign.start,
-                                      onSubmitted: (value) {
-                                        setState(() {
-                                          isEditing = false; // 편집 모드 종료
-                                          _inputText = value; // 입력값 저장
-                                        });
-                                      },
+                                      border: InputBorder.none,
+                                      isCollapsed: true,
                                     ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
+                                    textAlign: TextAlign.start,
+                                    onSubmitted: (value) {
                                       setState(() {
-                                        isEditing = true; // 편집 모드 시작
+                                        title = value.isEmpty ? "" : value;
+                                        isEditing = false; // 편집 모드 종료
                                       });
                                     },
-                                    child: Text(
-                                      _inputText ??
-                                          "향 이름을 설정해주세요", // 입력값이 없으면 힌트 텍스트 표시
-                                      style: TextStyle(
-                                        fontFamily: 'Pretendard',
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        color: _inputText == null
-                                            ? const Color(
-                                                0xff8b95a1) // 입력값이 없을 때 힌트 텍스트 색상
-                                            : Colors.black, // 입력값이 있을 때 검은색
-                                      ),
+                                  )
+                                : Text(
+                                    title,
+                                    style: const TextStyle(
+                                      fontFamily: 'Pretendard',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
                                     ),
                                   ),
                           ),

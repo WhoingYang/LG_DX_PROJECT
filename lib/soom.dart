@@ -57,7 +57,7 @@ class _SoomPageState extends State<SoomPage> {
   }
 
   bool isLightOn = true; // 발향 표시등 상태
-  bool isDiffuserOn = true; // 초기 상태
+  bool isDiffuserOn = false; // 초기 상태
 
   @override
   Widget build(BuildContext context) {
@@ -154,15 +154,18 @@ class _SoomPageState extends State<SoomPage> {
                                 child: Consumer<DiffuserState>(
                                   builder: (context, diffuserState, child) {
                                     return GestureDetector(
-                                      onTap: () {
-                                        diffuserState.toggleDiffuser(); // 상태 토글
-                                      },
-                                      child: Image.asset(
-                                        diffuserState.isDiffuserOn
-                                            ? "assets/img/home_power_icon.png" // 켜짐 상태
-                                            : "assets/img/home_power_off_icon.png", // 꺼짐 상태
-                                        width: 45,
-                                        height: 45,
+                                      onTap:
+                                          diffuserState.toggleDiffuser, // 상태 토글
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            diffuserState.isDiffuserOn
+                                                ? "assets/img/home_power_icon.png"
+                                                : "assets/img/home_power_off_icon.png",
+                                            width: 45,
+                                            height: 45,
+                                          ),
+                                        ],
                                       ),
                                     );
                                   },

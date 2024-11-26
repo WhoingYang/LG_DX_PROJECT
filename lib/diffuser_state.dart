@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart'; // ChangeNotifier를 사용하기 위해 필요
 
-class DiffuserState extends ChangeNotifier {
-  bool _isDiffuserOn = true; // 초기 상태
+class DiffuserState with ChangeNotifier {
+  bool _isDiffuserOn = false;
 
   bool get isDiffuserOn => _isDiffuserOn;
 
   void toggleDiffuser() {
     _isDiffuserOn = !_isDiffuserOn;
-    notifyListeners();
+    notifyListeners(); // 상태 변경 후 UI 업데이트
   }
 }
