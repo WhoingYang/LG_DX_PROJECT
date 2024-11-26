@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'soom.dart';
+import 'flutter_local_notifications.dart';
 
 class SecondModal extends StatefulWidget {
   const SecondModal({Key? key}) : super(key: key);
@@ -10,32 +11,6 @@ class SecondModal extends StatefulWidget {
 }
 
 class _SecondModalState extends State<SecondModal> {
-  // Local Notifications 플러그인 인스턴스 생성
-  final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeNotifications(); // 알림 초기화
-  }
-
-  // 알림 초기화 설정
-  Future<void> _initializeNotifications() async {
-    const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher'); // 안드로이드 아이콘 설정
-    const DarwinInitializationSettings iosInitializationSettings =
-        DarwinInitializationSettings(); // iOS 설정
-
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: androidInitializationSettings,
-      iOS: iosInitializationSettings,
-    );
-
-    await _localNotificationsPlugin.initialize(initializationSettings);
-  }
-
   // 알림 생성 함수
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidDetails =
@@ -54,7 +29,7 @@ class _SecondModalState extends State<SecondModal> {
       iOS: iosDetails,
     );
 
-    await _localNotificationsPlugin.show(
+    await flutterLocalNotificationsPlugin.show(
       0, // 알림 ID
       '조향 완료!', // 알림 제목
       '조향이 성공적으로 완료되었습니다.', // 알림 내용
@@ -72,7 +47,6 @@ class _SecondModalState extends State<SecondModal> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // 뒤로가기 버튼 (모달 상단)
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 10),
             child: Row(
@@ -93,7 +67,6 @@ class _SecondModalState extends State<SecondModal> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // gif 이미지
                 Image.asset(
                   'assets/img/perfuming.GIF',
                   width: 100,
@@ -101,8 +74,6 @@ class _SecondModalState extends State<SecondModal> {
                   fit: BoxFit.cover,
                 ),
                 const SizedBox(height: 10),
-
-                // 텍스트 내용
                 const Text(
                   "조향이 완료되면\n알람을 보내드릴게요!",
                   textAlign: TextAlign.center,
@@ -111,9 +82,6 @@ class _SecondModalState extends State<SecondModal> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 0),
-
-                // 확인 버튼
                 ElevatedButton(
                   onPressed: () async {
                     await _showNotification(); // 알림 표시
@@ -132,12 +100,9 @@ class _SecondModalState extends State<SecondModal> {
                     elevation: 0,
                     shadowColor: Colors.transparent,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    child: Text(
-                      "확인",
-                      style: TextStyle(color: Colors.black),
-                    ),
+                  child: const Text(
+                    "확인",
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
               ],
