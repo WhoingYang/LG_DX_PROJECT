@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'mysmell.dart';
 import 'edit_scent.dart';
 
 class HistoryPage extends StatefulWidget {

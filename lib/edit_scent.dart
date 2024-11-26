@@ -24,7 +24,6 @@ class _EditScentPageState extends State<EditScent> {
   late List<String> sliderLabels;
   String title = "향 이름을 설정해주세요";
   bool isEditing = false;
-  String? _inputText;
 
   @override
   void initState() {
